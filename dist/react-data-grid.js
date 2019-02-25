@@ -5225,7 +5225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  RowsContainer: _propTypes2['default'].node
 	};
 	Grid.defaultProps = {
-	  rowHeight: 35,
+	  rowHeight: 60,
 	  minHeight: 350
 	};
 
@@ -5986,7 +5986,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	ReactDataGrid.defaultProps = {
 	  enableCellSelect: false,
-	  rowHeight: 35,
+	  rowHeight: 60,
 	  headerFiltersHeight: 45,
 	  enableRowSelect: false,
 	  minHeight: 350,
