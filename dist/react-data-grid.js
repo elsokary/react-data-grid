@@ -5647,7 +5647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _extends({}, this.getKnownDivProps(), { className: 'react-grid-HeaderRow' }),
 	        React.createElement(
 	          'div',
-	          { style: cellsStyle },
+	          { style: cellsStyle,id: 'scrollWidthDiv' },
 	          cells
 	        )
 	      );
@@ -6904,7 +6904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, _this.updateScroll = function (scrollParams) {
 	      _this.resetScrollStateAfterDelay();
 	      var nextScrollState = _this.getNextScrollState(scrollParams);
-	      //_this.setState(nextScrollState);
+	      _this.setState(nextScrollState);
 	      return nextScrollState;
 	    }, _this.metricsUpdated = function () {
 	      var height = _this.viewportHeight();
