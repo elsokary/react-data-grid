@@ -1,3 +1,7 @@
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
+
+
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("react"), require("react-dom"));
@@ -1022,7 +1026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 	var setMaskStyle = function setMaskStyle(_ref) {
-	  var left = _ref.left,
+	  var left = currentLanguage == "ar" ? _ref.right : _ref.left,
 	      top = _ref.top,
 	      width = _ref.width,
 	      height = _ref.height,
@@ -1044,13 +1048,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var width = _ref2.width,
 	      height = _ref2.height,
 	      top = _ref2.top,
-	      left = _ref2.left,
+	      left = currentLanguage == "ar" ?_ref2.right   :_ref2.left ,
 	      zIndex = _ref2.zIndex,
 	      children = _ref2.children,
 	      position = _ref2.position,
 	      innerRef = _ref2.innerRef,
-	      rest = _objectWithoutProperties(_ref2, ['width', 'height', 'top', 'left', 'zIndex', 'children', 'position', 'innerRef']);
-
+				rest =	_objectWithoutProperties(_ref2, ['width', 'height', 'top', (currentLanguage == "ar" ? 'right'   :'left'), 'zIndex', 'children', 'position', 'innerRef'])
 	  return _react2['default'].createElement(
 	    'div',
 	    _extends({
@@ -1066,7 +1069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  width: _propTypes2['default'].number.isRequired,
 	  height: _propTypes2['default'].number.isRequired,
 	  top: _propTypes2['default'].number.isRequired,
-	  left: _propTypes2['default'].number.isRequired,
+	  [currentLanguage == "ar" ? 'right':'left']: _propTypes2['default'].number.isRequired,
 	  zIndex: _propTypes2['default'].number.isRequired,
 	  children: _propTypes2['default'].node,
 	  innerRef: _propTypes2['default'].func
@@ -1132,7 +1135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (idx >= 0) {
 	    var column = columnUtils.getColumn(columns, idx);
 	    var width = column.width,
-	        left = column.left;
+	        left = column[currentLanguage == "ar" ? 'right':'left'];
 
 	    var top = getRowTop(rowIdx, rowHeight);
 	    var zIndex = columnUtils.isFrozen(columns) ? _zIndexes2['default'].FROZEN_CELL_MASK : _zIndexes2['default'].CELL_MASK;
@@ -1161,8 +1164,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  if (topLeft.idx < 0) {
-	    return { width: 0, left: 0, top: 0, height: rowHeight, zIndex: _zIndexes2['default'].CELL_MASK };
-	  }
+		return
+			[currentLanguage == "ar" ?  { width: 0, left: 0, top: 0, height: rowHeight, zIndex: _zIndexes2['default'].CELL_MASK }
+	 		:{ width: 0, left: 0, top: 0, height: rowHeight, zIndex: _zIndexes2['default'].CELL_MASK }
+		]
+		}
 
 	  var _getColumnRangeProper = getColumnRangeProperties(topLeft.idx, bottomRight.idx, columns),
 	      totalWidth = _getColumnRangeProper.totalWidth,
@@ -1173,7 +1179,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var height = (bottomRight.rowIdx - topLeft.rowIdx + 1) * rowHeight;
 	  var zIndex = anyColFrozen ? _zIndexes2['default'].FROZEN_CELL_MASK : _zIndexes2['default'].CELL_MASK;
 
-	  return { width: totalWidth, left: left, top: top, height: height, zIndex: zIndex };
+		return
+		[currentLanguage == "ar" ? 
+		{ width: totalWidth, left: left, top: top, height: height, zIndex: zIndex } : 
+		{ width: totalWidth, left: left, top: top, height: height, zIndex: zIndex }]
 	};
 
 	var getSelectedColumn = exports.getSelectedColumn = function getSelectedColumn(_ref4) {
@@ -1544,7 +1553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    outer.style.height = '50px';
 	    outer.style.position = 'absolute';
 	    outer.style.top = '-200px';
-	    outer.style.left = '-200px';
+			outer.style[currentLanguage == "ar" ? 'right': 'left'] = '-200px';
 
 	    var inner = document.createElement('div');
 	    inner.style.height = '100px';
@@ -2183,14 +2192,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, _this.onDragOver = function (e) {
 	      e.preventDefault();
 	    }, _this.getStyle = function () {
-	      var style = {
+				var style; 
+				
+				currentLanguage == "ar" ? 
+				 style = {
+	        position: 'absolute',
+	        width: _this.props.column.width,
+	        height: _this.props.height,
+	        right: _this.props.column.right
+				}
+				: style = {
 	        position: 'absolute',
 	        width: _this.props.column.width,
 	        height: _this.props.height,
 	        left: _this.props.column.left
-	      };
+				}
 	      return style;
-	    }, _this.getFormatter = function () {
+			},
+			 _this.getFormatter = function () {
 	      return _this.props.column.formatter;
 	    }, _this.getRowData = function () {
 	      var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props;
@@ -2514,10 +2533,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 
+
 	function setColumnOffsets(columns) {
 	  var left = 0;
 	  return columns.map(function (column) {
-	    column.left = left;
+	    column[currentLanguage == "ar" ? 'right'   :'left'] = left;
 	    left += column.width;
 	    return column;
 	  });
@@ -2727,7 +2747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.setState({ resizing: false });
 	    }, _this.getWidthFromMouseEvent = function (e) {
 	      var right = e.pageX || e.touches && e.touches[0] && e.touches[0].pageX || e.changedTouches && e.changedTouches[e.changedTouches.length - 1].pageX;
-	      var left = _this.headerCell ? _this.headerCell.getBoundingClientRect().left : 0;
+	      var left = _this.headerCell ? _this.headerCell.getBoundingClientRect()[currentLanguage == "ar" ? 'right'   :'left'] : 0;
 	      return right - left;
 	    }, _this.getCell = function () {
 	      var _this$props = _this.props,
@@ -2743,7 +2763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _react2['default'].cloneElement(renderer, { column: column, height: height });
 	      }
 	      return _this.props.renderer({ column: column });
-	    }, _this.getStyle = function () {
+			}, 
+			_this.getStyle = function () {
 	      return {
 	        width: _this.props.column.width,
 	        left: _this.props.column.left,
@@ -2754,7 +2775,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        textOverflow: 'ellipsis',
 	        whiteSpace: 'nowrap'
 	      };
-	    }, _this.setScrollLeft = function (scrollLeft) {
+			},
+			_this.getStyleAr = function () {
+	      return {
+	        width: _this.props.column.width,
+	        right: _this.props.column.right,
+	        display: 'inline-block',
+	        position: 'absolute',
+	        height: _this.props.height,
+	        margin: 0,
+	        textOverflow: 'ellipsis',
+	        whiteSpace: 'nowrap'
+	      };
+			},
+			 _this.setScrollLeft = function (scrollLeft) {
 	      var node = _reactDom2['default'].findDOMNode(_this);
 	      if (node) {
 	        node.style.webkitTransform = 'translate3d(' + scrollLeft + 'px, 0px, 0px)';
@@ -2789,7 +2823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, this.props.className, column.cellClass);
 	      var cell = _react2['default'].createElement(
 	        'div',
-	        { ref: this.headerCellRef, className: className, style: this.getStyle() },
+	        { ref: this.headerCellRef, className: className, style: currentLanguage == "ar" ?  this.getStyleAr() : this.getStyle() },
 	        this.getCell(),
 	        resizeHandle
 	      );
@@ -3618,7 +3652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.calculateTransform = function () {
 	    var _props2 = _this2.props,
 	        column = _props2.column,
-	        left = _props2.left,
+	        left = _props2[currentLanguage == "ar" ? 'right'   :'left'],
 	        scrollLeft = _props2.scrollLeft,
 	        top = _props2.top,
 	        scrollTop = _props2.scrollTop;
@@ -4307,15 +4341,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        rows.push(this.renderPlaceholder('bottom', (rowsCount - rowOverscanEndIdx) * rowHeight));
 	      }
 
-	      var style = {
+				var style;
+				[currentLanguage == "ar" ?
+				style = {
+						position: 'absolute',
+						top: 0,
+						right : 0,
+						overflowX: 'auto',
+						overflowY: 'scroll',
+						width: totalWidth,
+						height: height
+					}
+				: 
+				style = {
 	        position: 'absolute',
 	        top: 0,
-	        left: 0,
+	        left : 0,
 	        overflowX: 'auto',
 	        overflowY: 'scroll',
 	        width: totalWidth,
 	        height: height
-	      };
+				}
+			]
 
 	      return _react2['default'].createElement(
 	        'div',
@@ -4936,20 +4983,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return c.key === _this2.props.expandColumnKey;
 	      }), 0);
 
-	      var cellLeft = expandColumn ? expandColumn.left : 0;
+	      var cellLeft = expandColumn ? expandColumn[currentLanguage == "ar" ? 'right'   :'left'] : 0;
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'react-grid-Row rdg-add-child-row-container', style: style },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'react-grid-Cell', style: { position: 'absolute', height: cellHeight, width: '100%', left: cellLeft } },
+	          { className: 'react-grid-Cell', style: [currentLanguage == "ar" ? { position: 'absolute', height: cellHeight, width: '100%', right : cellLeft } : { position: 'absolute', height: cellHeight, width: '100%', left: cellLeft } ] },
 	          _react2['default'].createElement(
 	            'div',
 	            { className: 'rdg-empty-child-row', style: { marginLeft: '30px', lineHeight: cellHeight + 'px' } },
 	            _react2['default'].createElement('div', { className: '\'rdg-child-row-action-cross rdg-child-row-action-cross-last' }),
 	            _react2['default'].createElement(
 	              'div',
-	              { style: { left: left, top: top, width: width, height: height }, className: 'rdg-child-row-btn', onClick: this.onAddSubRow },
+	              { style: [currentLanguage == "ar" ? { right: left, top: top, width: width, height: height } : { left: left, top: top, width: width, height: height }], className: 'rdg-child-row-btn', onClick: this.onAddSubRow },
 	              _react2['default'].createElement('div', { className: 'glyphicon glyphicon-plus-sign' })
 	            )
 	          )
@@ -5430,7 +5477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      return React.createElement(
 	        'div',
-	        _extends({}, this.getKnownDivProps(), { style: this.getStyle(), className: className, onClick: this.onHeaderClick }),
+	        _extends({}, this.getKnownDivProps(), { style: this.getStyle()  , className: className, onClick: this.onHeaderClick }),
 	        headerRows
 	      );
 	    }
@@ -6681,7 +6728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'render',
 	    value: function render() {
 	      var lastColumn = (0, _utils.last)(this.props.columns);
-	      var style = { width: lastColumn.left + lastColumn.width };
+	      var style = { width: lastColumn[currentLanguage == "ar" ? 'right'   :'left'] + lastColumn.width };
 
 	      return _react2['default'].createElement(
 	        'div',
@@ -8469,7 +8516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var top = getSelectedRowTop(selectedPosition.rowIdx);
 	  var frozen = isFrozenColumn(columns, selectedPosition);
 	  var zIndex = frozen ? _zIndexes2['default'].FROZEN_CELL_MASK : _zIndexes2['default'].CELL_MASK;
-	  var left = getLeftPosition(frozen, column.left, props);
+	  var left = getLeftPosition(frozen, column[currentLanguage == "ar" ? 'right'   :'left'], props);
 	  return { height: height, top: top, width: column.width, left: left, zIndex: zIndex };
 	};
 
@@ -8671,7 +8718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var lastFrozenColumnIndex = findLastFrozenColumnIndex(columns);
 	  if (lastFrozenColumnIndex > -1) {
 	    var lastFrozenColumn = _ColumnUtils2['default'].getColumn(columns, lastFrozenColumnIndex);
-	    return lastFrozenColumn.left + lastFrozenColumn.width;
+	    return lastFrozenColumn[currentLanguage == "ar" ? 'right'   :'left'] + lastFrozenColumn.width;
 	  }
 	  return 0;
 	};
@@ -8713,7 +8760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var firstColumn = _ColumnUtils2['default'].getColumn(columnMetrics.columns, colVisibleStartIdx);
 	  // calculate the portion width of first column hidden behind frozen columns
 	  var scrolledFrozenWidth = totalFrozenColumnWidth + scrollLeft;
-	  var firstColumnHiddenWidth = scrolledFrozenWidth > firstColumn.left ? scrolledFrozenWidth - firstColumn.left : 0;
+	  var firstColumnHiddenWidth = scrolledFrozenWidth > firstColumn[currentLanguage == "ar" ? 'right'   :'left'] ? scrolledFrozenWidth - firstColumn[currentLanguage == "ar" ? 'right'   :'left'] : 0;
 	  var initialWidth = viewportWidth - totalFrozenColumnWidth + firstColumnHiddenWidth;
 
 	  var _getColumnCountForWid = getColumnCountForWidth(columnMetrics.columns, initialWidth, colVisibleStartIdx),
